@@ -18,12 +18,12 @@ class WildfireBasket extends WaxModel{
     return $this->filter("token", $token)->all();
   }
   
-  public function add($token, $class, $item){
+  public function add_to($token, $class, $item){
     $cl = get_class($this);
     $mo = new $cl;
     return $mo->update_attributes(array('token'=>$token, 'class'=>$class, 'item'=>$item));
   }
-  public function remove($token, $class, $item){
+  public function remove_from($token, $class, $item){
     $cl = get_class($this);
     $mo = new $cl;
     if($found = $mo->filter(array('token'=>$token, 'class'=>$class, 'item'=>$item))->first()) $found->delete();
