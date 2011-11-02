@@ -22,7 +22,8 @@ class WildfireBasketController extends ApplicationController{
       $model = new $this->basket_model_class;
       $model->add($this->basket_id, $this->basket_class, $item);
     }
-    $this->redirect_to($_SERVER['HTTP_REFERER']);
+    if($_SERVER['HTTP_REFERER']) $this->redirect_to($_SERVER['HTTP_REFERER']);
+    else $this->redirect_to("/");
   }
   
   public function delete(){
@@ -31,7 +32,8 @@ class WildfireBasketController extends ApplicationController{
       $model = new $this->basket_model_class;
       $model->remove($this->basket_id, $this->basket_class, $item);
     }
-    $this->redirect_to($_SERVER['HTTP_REFERER']);
+    if($_SERVER['HTTP_REFERER']) $this->redirect_to($_SERVER['HTTP_REFERER']);
+    else $this->redirect_to("/");
   }
   //until something is added/removed from basket get an empty id
   protected function id($generate = true){
