@@ -1,0 +1,4 @@
+PROVIDES A BASIC BASKET INTERFACE
+
+/basket/add/ID
+/basket/remove/ID
