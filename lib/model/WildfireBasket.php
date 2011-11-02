@@ -8,11 +8,25 @@ class WildfireBasket extends WaxModel{
     $this->define("ip", "CharField");
   }
 
+  public function before_save(){
+    if(!$this->ip) $this->ip = $_SERVER['REMOTE_ADDR'];
+  }
+
   public function basket($token, $class=false,$item=false){
     if($class) $this->filter("class", $class);
     if($item) $this->filter("item", $item);
     return $this->filter("token", $token)->all();
   }
   
+  public function add($token, $class, $item){
+    $cl = get_class($this);
+    $mo = new $cl;
+    return $mo->update_attributes(array('token'=>$token, 'class'=>$class, 'item'=>$item));
+  }
+  public function remove($token, $class, $item){
+    $cl = get_class($this);
+    $mo = new $cl;
+    if($found = $mo->filter(array('token'=>$token, 'class'=>$class, 'item'=>$item))->first()) $found->delete();
+  }
 }
 ?>
