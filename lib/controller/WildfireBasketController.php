@@ -8,6 +8,7 @@ class WildfireBasketController extends ApplicationController{
   public $basket_model_class = "WildfireBasket"; //the actual basket
   public $basket_class = false; //the class going in to the basket
   public $lifetime = 2592000; //(60*60*24*30) - 30 days
+  public $redirect_on_change_basket = true;
 
   public function controller_global(){
     parent::controller_global();
@@ -15,26 +16,31 @@ class WildfireBasketController extends ApplicationController{
     if(!$this->basket_class) $this->basket_class = $this->cms_content_class;
     if($this->basket_id) $this->basket = $this->basket($this->basket_id);
   }
-
-  public function add(){
-    if($item = Request::param('id')){
+  
+  public function add($item){
+    if($item || ($item = Request::param('id'))){
       if(!$this->basket_id) $this->basket_id = $this->id($item);
       $model = new $this->basket_model_class;
       $model->add_to($this->basket_id, $this->basket_class, $item);
-    }   
-    if($_SERVER['HTTP_REFERER']) $this->redirect_to($_SERVER['HTTP_REFERER']);
-    else $this->redirect_to("/");
+    }
+    if($this->redirect_on_change_basket){
+      if($_SERVER['HTTP_REFERER']) $this->redirect_to($_SERVER['HTTP_REFERER']);
+      else $this->redirect_to("/");
+    }
   }
   
-  public function delete(){
-    if($item = Request::param('id')){
+  public function delete($item){
+    if($item || ($item = Request::param('id'))){
       if(!$this->basket_id) $this->basket_id = $this->id($item);
       $model = new $this->basket_model_class;
       $model->remove_from($this->basket_id, $this->basket_class, $item);
     }
-    if($_SERVER['HTTP_REFERER']) $this->redirect_to($_SERVER['HTTP_REFERER']);
-    else $this->redirect_to("/");
+    if($this->redirect_on_change_basket){
+      if($_SERVER['HTTP_REFERER']) $this->redirect_to($_SERVER['HTTP_REFERER']);
+      else $this->redirect_to("/");
+    }
   }
+  
   //until something is added/removed from basket get an empty id
   protected function id($generate = true){    
     if($id = $_COOKIE[$this->basket_cookie_var]) return $id;
