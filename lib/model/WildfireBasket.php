@@ -27,6 +27,7 @@ class WildfireBasket extends WaxModel{
     $cl = get_class($this);
     $mo = new $cl;
     if($found = $mo->filter(array('token'=>$token, 'class'=>$class, 'item'=>$item))->first()) $found->delete();
+    return $found;
   }
 }
 ?>
