@@ -33,7 +33,7 @@ class WildfireBasketController extends ApplicationController{
     if($item || ($item = Request::param('id'))){
       if(!$this->basket_id) $this->basket_id = $this->id($item);
       $model = new $this->basket_model_class;
-      $model->remove_from($this->basket_id, $this->basket_class, $item);
+      $this->removed_item = $model->remove_from($this->basket_id, $this->basket_class, $item);
     }
     if($this->redirect_on_change_basket){
       if($_SERVER['HTTP_REFERER']) $this->redirect_to($_SERVER['HTTP_REFERER']);
